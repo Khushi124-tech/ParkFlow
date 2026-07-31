@@ -1,0 +1,22 @@
+# IntelliJ
+.idea/
+*.iml
+
+# Eclipse
+.metadata/
+.project
+.classpath
+.settings/
+
+# Maven
+**/target/
+
+# Node
+**/node_modules/
+**/dist/
+
+# Logs
+*.log
+
+# Environment
+.env
