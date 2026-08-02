@@ -8,11 +8,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-    Page<Booking> findByAppUser(AppUser appUser, Pageable pageable);
+    Optional<Booking> findByIdAndAppUser(
+            Long id,
+            AppUser appUser
+    );
 
-    boolean existsByVehicleAndStatus(Vehicle vehicle, BookingStatus status);
+    Optional<Booking> findByIdAndStatus(
+            Long id,
+            BookingStatus status
+    );
+
+    Page<Booking> findByAppUserAndStatus(
+            AppUser appUser,
+            BookingStatus status,
+            Pageable pageable
+    );
 };

@@ -38,7 +38,7 @@ public class Booking extends BaseEntity {
     private LocalDateTime exitTime;
 
     @Column(precision = 10, scale = 2)
-    private BigDecimal amount;
+    private BigDecimal totalAmount;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

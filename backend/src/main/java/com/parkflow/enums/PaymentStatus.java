@@ -2,6 +2,6 @@ package com.parkflow.enums;
 
 public enum PaymentStatus {
     PENDING,
-    SUCCEED,
+    SUCCESS,
     FAILED
 }

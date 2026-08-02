@@ -1,6 +1,7 @@
 package com.parkflow.dto.booking;
 
 import com.parkflow.enums.BookingStatus;
+import com.parkflow.enums.PaymentStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,13 +18,17 @@ public class BookingResponseDto {
 
     private Long vehicleId;
 
+    private String vehicleNumber;
+
     private Long parkingLotId;
+
+    private String parkingLotName;
 
     private LocalDateTime entryTime;
 
     private LocalDateTime exitTime;
 
-    private BigDecimal amount;
+    private BigDecimal totalAmount;
 
     private BookingStatus status;
 }
