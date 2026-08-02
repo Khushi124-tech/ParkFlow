@@ -13,9 +13,8 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
     Page<Vehicle> findByAppUserAndStatus(AppUser appUser, VehicleStatus status, Pageable pageable);
 
-    Optional<Vehicle> findByVehicleNumber(String vehicleNumber);
-
-    boolean existsByVehicleNumber(String vehicleNumber);
+    boolean existsByVehicleNumberAndStatus(String vehicleNumber, VehicleStatus status);
 
     Optional<Vehicle> findByIdAndAppUserAndStatus(Long id, AppUser appUser, VehicleStatus status);
+
 }
