@@ -21,10 +21,12 @@ public final class ErrorCodes {
 
     public static final String BOOKING_NOT_FOUND = "BOOKING_NOT_FOUND";
     public static final String ACTIVE_BOOKING_EXISTS = "ACTIVE_BOOKING_EXISTS";
+    public static final String INVALID_BOOKING_STATE = "INVALID_BOOKING_STATE";
 
     public static final String PAYMENT_NOT_FOUND = "PAYMENT_NOT_FOUND";
     public static final String PAYMENT_FAILED = "PAYMENT_FAILED";
     public static final String PAYMENT_PENDING = "PAYMENT_PENDING";
+    public static final String PAYMENT_ALREADY_EXISTS = "PAYMENT_ALREADY_EXISTS";
 
     public static final String VALIDATION_ERROR = "VALIDATION_ERROR";
     public static final String INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR";

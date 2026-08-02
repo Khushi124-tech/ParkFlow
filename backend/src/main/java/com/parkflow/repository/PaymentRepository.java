@@ -13,5 +13,10 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
     Optional<Payment> findByBooking(Booking booking);
 
-    Page<Payment> findByBooking_AppUser(AppUser appUser, Pageable pageable);
+    Page<Payment> findByBooking_AppUserOrderByCreatedAtDesc(AppUser appUser, Pageable pageable);
+
+    Optional<Payment> findByIdAndBooking_AppUser(
+            Long id,
+            AppUser appUser
+    );
 }

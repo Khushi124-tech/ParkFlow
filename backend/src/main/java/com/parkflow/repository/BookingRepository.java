@@ -12,19 +12,18 @@ import java.util.Optional;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
+    Page<Booking> findByAppUserOrderByCreatedAtDesc(
+            AppUser appUser,
+            Pageable pageable
+    );
+
     Optional<Booking> findByIdAndAppUser(
             Long id,
             AppUser appUser
     );
 
-    Optional<Booking> findByIdAndStatus(
-            Long id,
+    boolean existsByVehicleAndStatus(
+            Vehicle vehicle,
             BookingStatus status
     );
-
-    Page<Booking> findByAppUserAndStatus(
-            AppUser appUser,
-            BookingStatus status,
-            Pageable pageable
-    );
-};
+}
