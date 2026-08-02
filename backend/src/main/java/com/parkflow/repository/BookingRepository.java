@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
+    long countByStatus(BookingStatus status);
     Page<Booking> findByAppUserOrderByCreatedAtDesc(
             AppUser appUser,
             Pageable pageable
