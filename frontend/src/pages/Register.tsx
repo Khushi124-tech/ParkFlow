@@ -54,13 +54,6 @@ export default function Register() {
           {...register("email")}
         />
         <Input
-          label="Phone number"
-          type="tel"
-          placeholder="9876543210"
-          error={errors.phoneNumber?.message}
-          {...register("phoneNumber")}
-        />
-        <Input
           label="Password"
           type="password"
           placeholder="••••••••"

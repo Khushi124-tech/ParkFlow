@@ -54,7 +54,7 @@ export default function Vehicles() {
   }, []);
 
   function openModal() {
-    reset({ vehicleNumber: "", vehicleType: "CAR", model: "", color: "" });
+    reset({ vehicleNumber: "", vehicleType: "CAR", brand: "", model: "" });
     setIsModalOpen(true);
   }
 
@@ -126,8 +126,8 @@ export default function Vehicles() {
                 <tr className="border-b border-slate-100 text-slate-500">
                   <th className="px-6 py-3 font-medium">Vehicle Number</th>
                   <th className="px-6 py-3 font-medium">Type</th>
+                  <th className="px-6 py-3 font-medium">Brand</th>
                   <th className="px-6 py-3 font-medium">Model</th>
-                  <th className="px-6 py-3 font-medium">Color</th>
                   <th className="px-6 py-3 font-medium text-right">Actions</th>
                 </tr>
               </thead>
@@ -140,8 +140,8 @@ export default function Vehicles() {
                     <td className="px-6 py-4">
                       <Badge variant="blue">{vehicle.vehicleType}</Badge>
                     </td>
+                    <td className="px-6 py-4 text-slate-600">{vehicle.brand}</td>
                     <td className="px-6 py-4 text-slate-600">{vehicle.model}</td>
-                    <td className="px-6 py-4 text-slate-600">{vehicle.color}</td>
                     <td className="px-6 py-4 text-right">
                       <button
                         type="button"
@@ -175,16 +175,16 @@ export default function Vehicles() {
             {...register("vehicleType")}
           />
           <Input
-            label="Model"
-            placeholder="Honda City"
-            error={errors.model?.message}
-            {...register("model")}
+            label="Brand"
+            placeholder="Honda"
+            error={errors.brand?.message}
+            {...register("brand")}
           />
           <Input
-            label="Color"
-            placeholder="White"
-            error={errors.color?.message}
-            {...register("color")}
+            label="Model"
+            placeholder="City"
+            error={errors.model?.message}
+            {...register("model")}
           />
           <div className="mt-2 flex justify-end gap-3">
             <Button

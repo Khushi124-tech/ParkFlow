@@ -1,31 +1,18 @@
-export type BookingStatus =
-    | "ACTIVE"
-    | "COMPLETED"
-    | "CANCELLED";
+export type BookingStatus = "ACTIVE" | "COMPLETED" | "CANCELLED";
 
 export interface Booking {
-    id: number;
-    vehicleId: number;
-    parkingLotId: number;
-
-    vehicleNumber: string;
-    parkingLotName: string;
-
-    startTime: string;
-    endTime?: string;
-
-    duration?: number;
-    amount?: number;
-
-    status: BookingStatus;
+  id: number;
+  vehicleId: number;
+  vehicleNumber: string;
+  parkingLotId: number;
+  parkingLotName: string;
+  entryTime: string;
+  exitTime?: string | null;
+  totalAmount?: number | null;
+  status: BookingStatus;
 }
 
 export interface CreateBookingRequest {
-    vehicleId: number;
-    parkingLotId: number;
-}
-
-export interface CheckoutResponse {
-    success: boolean;
-    message: string;
+  vehicleId: number;
+  parkingLotId: number;
 }

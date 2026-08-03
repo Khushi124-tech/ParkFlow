@@ -1,39 +1,23 @@
 import axiosInstance from "./axiosInstance";
-import type {
-    Payment,
-    PaymentRequest,
-} from "../types/payment.types";
-import type { ApiResponse } from "../types/api.types";
+import type { ApiResponse, SpringPage } from "../types/api.types";
+import type { Payment, PaymentRequest } from "../types/payment.types";
 
 const BASE_URL = "/payments";
 
 export const paymentService = {
-    pay: async (
-        bookingId: number,
-        payload: PaymentRequest
-    ) => {
-        const response =
-            await axiosInstance.post<ApiResponse<Payment>>(
-                `/bookings/${bookingId}/payment`,
-                payload
-            );
+  async pay(bookingId: number, payload: PaymentRequest): Promise<Payment> {
+    const response = await axiosInstance.post<ApiResponse<Payment>>(`${BASE_URL}/${bookingId}`, payload);
+    return response.data.data;
+  },
 
-        return response.data.data;
-    },
+  async getAll(): Promise<Payment[]> {
+    const response = await axiosInstance.get<ApiResponse<SpringPage<Payment> | Payment[]>>(BASE_URL);
+    const data = response.data.data;
+    return Array.isArray(data) ? data : data.content;
+  },
 
-    getAll: async () => {
-        const response =
-            await axiosInstance.get<ApiResponse<Payment[]>>(BASE_URL);
-
-        return response.data.data;
-    },
-
-    getById: async (id: number) => {
-        const response =
-            await axiosInstance.get<ApiResponse<Payment>>(
-                `${BASE_URL}/${id}`
-            );
-
-        return response.data.data;
-    },
+  async getById(id: number): Promise<Payment> {
+    const response = await axiosInstance.get<ApiResponse<Payment>>(`${BASE_URL}/${id}`);
+    return response.data.data;
+  },
 };

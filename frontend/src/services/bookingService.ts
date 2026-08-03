@@ -1,42 +1,28 @@
 import axiosInstance from "./axiosInstance";
-import type {
-    Booking,
-    CreateBookingRequest,
-    CheckoutResponse,
-} from "../types/booking.types";
-import type { ApiResponse } from "../types/api.types";
+import type { ApiResponse, SpringPage } from "../types/api.types";
+import type { Booking, CreateBookingRequest } from "../types/booking.types";
 
 const BASE_URL = "/bookings";
 
 export const bookingService = {
-    create: async (payload: CreateBookingRequest) => {
-        const response = await axiosInstance.post<ApiResponse<Booking>>(
-            BASE_URL,
-            payload
-        );
-        return response.data.data;
-    },
+  async create(payload: CreateBookingRequest): Promise<Booking> {
+    const response = await axiosInstance.post<ApiResponse<Booking>>(BASE_URL, payload);
+    return response.data.data;
+  },
 
-    getAll: async () => {
-        const response =
-            await axiosInstance.get<ApiResponse<Booking[]>>(BASE_URL);
+  async getAll(): Promise<Booking[]> {
+    const response = await axiosInstance.get<ApiResponse<SpringPage<Booking> | Booking[]>>(BASE_URL);
+    const data = response.data.data;
+    return Array.isArray(data) ? data : data.content;
+  },
 
-        return response.data.data;
-    },
+  async getById(id: number): Promise<Booking> {
+    const response = await axiosInstance.get<ApiResponse<Booking>>(`${BASE_URL}/${id}`);
+    return response.data.data;
+  },
 
-    getById: async (id: number) => {
-        const response =
-            await axiosInstance.get<ApiResponse<Booking>>(`${BASE_URL}/${id}`);
-
-        return response.data.data;
-    },
-
-    checkout: async (id: number) => {
-        const response =
-            await axiosInstance.post<ApiResponse<CheckoutResponse>>(
-                `${BASE_URL}/${id}/checkout`
-            );
-
-        return response.data.data;
-    },
+  async complete(id: number): Promise<Booking> {
+    const response = await axiosInstance.patch<ApiResponse<Booking>>(`${BASE_URL}/${id}/complete`);
+    return response.data.data;
+  },
 };

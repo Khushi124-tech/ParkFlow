@@ -20,7 +20,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
 
-  // Hydrate session from localStorage on first load.
   useEffect(() => {
     const storedToken = localStorage.getItem(TOKEN_STORAGE_KEY);
     const storedUser = localStorage.getItem(USER_STORAGE_KEY);
@@ -47,12 +46,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function login(payload: LoginRequest) {
     const result = await authService.login(payload);
-    persistSession(result.token, result.user);
+    persistSession(result.accessToken, {
+      id: result.id,
+      fullName: result.fullName,
+      email: result.email,
+      role: result.role,
+    });
   }
 
   async function register(payload: RegisterRequest) {
     const result = await authService.register(payload);
-    persistSession(result.token, result.user);
+    persistSession(result.accessToken, {
+      id: result.id,
+      fullName: result.fullName,
+      email: result.email,
+      role: result.role,
+    });
   }
 
   function logout() {

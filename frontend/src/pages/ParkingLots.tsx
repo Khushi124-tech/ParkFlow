@@ -49,7 +49,7 @@ export default function ParkingLots() {
   }, []);
 
   function openModal() {
-    reset({ name: "", address: "", totalSlots: "", pricePerHour: "" });
+    reset({ name: "", address: "", city: "", totalSlots: "", hourlyRate: "" });
     setIsModalOpen(true);
   }
 
@@ -59,8 +59,9 @@ export default function ParkingLots() {
       const created = await parkingLotService.createParkingLot({
         name: values.name,
         address: values.address,
+        city: values.city,
         totalSlots: Number(values.totalSlots),
-        pricePerHour: Number(values.pricePerHour),
+        hourlyRate: Number(values.hourlyRate),
       });
       setParkingLots((prev) => [created, ...prev]);
       toast.success("Parking lot created successfully");
@@ -145,7 +146,7 @@ export default function ParkingLots() {
                 <Badge variant={lot.availableSlots > 0 ? "green" : "red"}>
                   {lot.availableSlots} / {lot.totalSlots} slots free
                 </Badge>
-                <Badge variant="slate">₹{lot.pricePerHour}/hr</Badge>
+                <Badge variant="slate">₹{lot.hourlyRate}/hr</Badge>
               </div>
             </Card>
           ))}
@@ -167,6 +168,12 @@ export default function ParkingLots() {
             {...register("address")}
           />
           <Input
+            label="City"
+            placeholder="Mumbai"
+            error={errors.city?.message}
+            {...register("city")}
+          />
+          <Input
             label="Total Slots"
             type="number"
             placeholder="50"
@@ -174,12 +181,12 @@ export default function ParkingLots() {
             {...register("totalSlots")}
           />
           <Input
-            label="Price Per Hour (₹)"
+            label="Hourly Rate (₹)"
             type="number"
             step="0.01"
             placeholder="40"
-            error={errors.pricePerHour?.message}
-            {...register("pricePerHour")}
+            error={errors.hourlyRate?.message}
+            {...register("hourlyRate")}
           />
           <div className="mt-2 flex justify-end gap-3">
             <Button

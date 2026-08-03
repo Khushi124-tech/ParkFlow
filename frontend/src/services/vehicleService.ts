@@ -13,8 +13,6 @@ export const vehicleService = {
       "/vehicles"
     );
     const data = response.data.data;
-    // Backend list endpoints follow Spring Page, but fall back to a plain
-    // array so this keeps working if the endpoint isn't paginated.
     return Array.isArray(data) ? data : data.content;
   },
 
