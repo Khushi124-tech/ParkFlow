@@ -1,32 +1,43 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Car, ParkingSquare, CalendarCheck, CreditCard, ArrowRight } from "lucide-react";
-import Card from "../components/ui/Card";
+import {
+  Car,
+  ParkingSquare,
+  CalendarCheck,
+  CreditCard,
+} from "lucide-react";
+
+import OccupancyPieChart from "../components/charts/OccupancyPieChart";
+import RevenueLineChart from "../components/charts/RevenueLineChart";
+import VehicleDistributionChart from "../components/charts/VehicleDistributionChart";
+
+import { dashboardService } from "../services/dashboardService";
 import { useAuth } from "../context/AuthContext";
 import { ROUTES } from "../utils/constants";
 
 const quickLinks = [
   {
-    label: "Vehicles",
+    title: "Vehicles",
     description: "Register and manage your vehicles",
-    to: ROUTES.VEHICLES,
+    path: ROUTES.VEHICLES,
     icon: Car,
   },
   {
-    label: "Parking Lots",
+    title: "Parking Lots",
     description: "Browse available parking lots",
-    to: ROUTES.PARKING_LOTS,
+    path: ROUTES.PARKING_LOTS,
     icon: ParkingSquare,
   },
   {
-    label: "Bookings",
-    description: "View and manage your bookings",
-    to: ROUTES.BOOKINGS,
+    title: "Bookings",
+    description: "Manage your bookings",
+    path: ROUTES.BOOKINGS,
     icon: CalendarCheck,
   },
   {
-    label: "Payments",
-    description: "Track your payment history",
-    to: ROUTES.PAYMENTS,
+    title: "Payments",
+    description: "View payment history",
+    path: ROUTES.PAYMENTS,
     icon: CreditCard,
   },
 ];
@@ -34,36 +45,96 @@ const quickLinks = [
 export default function Dashboard() {
   const { user } = useAuth();
 
-  return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-slate-900">
-          Welcome back{user?.fullName ? `, ${user.fullName}` : ""}
-        </h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Here&apos;s a quick way to get to what you need.
-        </p>
-      </div>
+  const [stats, setStats] = useState<any>(null);
+  const [occupancy, setOccupancy] = useState<any[]>([]);
+  const [vehicles, setVehicles] = useState<any[]>([]);
+  const [revenue, setRevenue] = useState<any[]>([]);
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {quickLinks.map(({ label, description, to, icon: Icon }) => (
-          <Link key={to} to={to}>
-            <Card className="flex h-full flex-col gap-4 transition-shadow hover:shadow-md">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                <Icon className="h-5 w-5" />
-              </div>
-              <div>
-                <h2 className="font-medium text-slate-900">{label}</h2>
-                <p className="mt-1 text-sm text-slate-500">{description}</p>
-              </div>
-              <span className="mt-auto flex items-center gap-1 text-sm font-medium text-blue-600">
-                Go to {label}
-                <ArrowRight className="h-4 w-4" />
-              </span>
-            </Card>
-          </Link>
-        ))}
+  useEffect(() => {
+    async function loadDashboard() {
+      setStats(await dashboardService.getStats());
+      setOccupancy(await dashboardService.getOccupancy());
+      setVehicles(await dashboardService.getVehicleDistribution());
+      setRevenue(await dashboardService.getRevenue());
+    }
+
+    loadDashboard();
+  }, []);
+
+  if (!stats) {
+    return (
+        <div className="flex h-64 items-center justify-center">
+          Loading dashboard...
+        </div>
+    );
+  }
+
+  return (
+      <div className="space-y-8">
+
+        <div>
+          <h1 className="text-3xl font-bold text-slate-900">
+            Welcome back{user?.fullName ? `, ${user.fullName}` : ""}
+          </h1>
+
+          <p className="mt-2 text-slate-500">
+            ParkFlow Dashboard
+          </p>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {quickLinks.map(({ title, description, path, icon: Icon }) => (
+              <Link
+                  key={title}
+                  to={path}
+                  className="rounded-xl border bg-white p-5 shadow transition hover:shadow-lg"
+              >
+                <Icon className="mb-3 h-8 w-8 text-blue-600" />
+
+                <h2 className="font-semibold text-slate-900">
+                  {title}
+                </h2>
+
+                <p className="mt-2 text-sm text-slate-500">
+                  {description}
+                </p>
+              </Link>
+          ))}
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <StatCard title="Vehicles" value={stats.totalVehicles} />
+          <StatCard title="Bookings" value={stats.totalBookings} />
+          <StatCard title="Active" value={stats.activeBookings} />
+          <StatCard title="Completed" value={stats.completedBookings} />
+          <StatCard title="Revenue" value={`₹${stats.totalRevenue}`} />
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-2">
+          <OccupancyPieChart data={occupancy} />
+          <VehicleDistributionChart data={vehicles} />
+        </div>
+
+        <RevenueLineChart data={revenue} />
+
       </div>
-    </div>
+  );
+}
+
+function StatCard({
+                    title,
+                    value,
+                  }: {
+  title: string;
+  value: string | number;
+}) {
+  return (
+      <div className="rounded-xl border bg-white p-5 shadow">
+        <p className="text-sm text-slate-500">{title}</p>
+
+        <h2 className="mt-2 text-3xl font-bold text-slate-900">
+          {value}
+        </h2>
+      </div>
   );
 }
