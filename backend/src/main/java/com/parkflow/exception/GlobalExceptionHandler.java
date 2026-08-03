@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
         ErrorResponse response = new ErrorResponse(
                 false,
                 ex.getMessage(),
-                ErrorCodes.USER_NOT_FOUND,
+                ex.getErrorCode(),
                 LocalDateTime.now(),
                 request.getRequestURI(),
                 null
